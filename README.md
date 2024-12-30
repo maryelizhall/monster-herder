@@ -1,5 +1,4 @@
 # monster-herder
-Herding game in python
 
 Welcome to Monster Herder!  Here are some directions:
 - Your goal is to move the robot to herd the monsters through the door in the bottom left corner.
