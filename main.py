@@ -5,7 +5,7 @@
 # Each coin collected is worth 1 point.
 # Each monster that escapes through the right or left side of the window is a 1 point deduction.
 # The monsters will scatter if you don't try to herd them.
-# They'll move closer together and away from them when the robot is in motion.
+# They'll move closer together and away from the robot when the robot is in motion.
 # Have fun!
 
 import pygame
@@ -22,6 +22,7 @@ class MonsterHerder:
         self.monster_speed = 0.5
         self.robot_speed = 2
         self.gate_width = 4
+        self.com_dist_thresh = 50
         self.coins_caught = 0
         self.monsters_caught = 0
         self.monsters_lost = 0
@@ -123,22 +124,29 @@ class MonsterHerder:
         if self.to_right or self.to_left or self.to_up or self.to_down:
             for ii in range(len(self.monster_x)):
                 movement_angle = random.random()*0.5*math.pi
+                com_dist = ((self.monster_x[ii] - monster_com_x)**2 + (self.monster_y[ii] - monster_com_y)**2)**0.5
 
                 # position changes to move closer to each other
                 if self.monster_x[ii] > -self.monster.get_width() and self.monster_x[ii] < self.window_width:
-                    if self.monster_x[ii] >= monster_com_x:
-                        self.monster_x[ii] -= 0.25*self.monster_speed*math.cos(movement_angle)
+                    if com_dist > self.com_dist_thresh:
+                        if self.monster_x[ii] >= monster_com_x:
+                            self.monster_x[ii] -= 0.25*self.monster_speed*math.cos(movement_angle)
+                        else:
+                            self.monster_x[ii] += 0.25*self.monster_speed*math.cos(movement_angle)
                     else:
-                        self.monster_x[ii] += 0.25*self.monster_speed*math.cos(movement_angle)
+                        self.monster_x[ii] += 0.25*random.randint(-2,2)
                 else:
                     self.monsters_lost += 1
                     exited_monsters.append(ii)
                 
                 if self.monster_y[ii] > 0 and self.monster_y[ii] < (self.window_height - self.monster.get_height()):
-                    if self.monster_y[ii] >= monster_com_y:
-                        self.monster_y[ii] -= 0.25*self.monster_speed*math.sin(movement_angle)
+                    if com_dist > self.com_dist_thresh:
+                        if self.monster_y[ii] >= monster_com_y:
+                            self.monster_y[ii] -= 0.25*self.monster_speed*math.sin(movement_angle)
+                        else:
+                            self.monster_y[ii] += 0.25*self.monster_speed*math.sin(movement_angle)
                     else:
-                        self.monster_y[ii] += 0.25*self.monster_speed*math.sin(movement_angle)
+                        self.monster_y[ii] += 0.25*random.randint(-2,2)
 
                 # position changes to move away from the robot
                 robot_dx = self.monster_x[ii] - self.robot_x
@@ -170,7 +178,7 @@ class MonsterHerder:
                     else:
                         self.monster_y[ii] -= self.monster_speed*math.sin(movement_angle)
 
-        # check to see if robots have gone through gate
+        # check to see if monsters have gone through gate
         for ii in range(len(self.monster_x)):
             if self.monster_x[ii] > self.door_loc[0] and self.monster_x[ii] < self.door_loc[0] + (self.door.get_width()-16)*self.gate_width - self.monster.get_width():
                 if self.monster_y[ii] > self.door_loc[1]:
