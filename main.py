@@ -1,5 +1,5 @@
 # Welcome to Monster Herder!  Here are some directions:
-# Your goal is to move the robot to herd the monsters through the door in the bottom left corner.
+# Your goal is to move the dog to herd the monsters through the door in the bottom left corner.
 # Collect coins along the way for extra points!
 # Each monster that goes through the gate is worth 3 points.
 # Each coin collected is worth 1 point.
@@ -45,7 +45,7 @@ class MonsterHerder:
         self.main_loop()
 
     def load_images(self):
-        self.robot = pygame.image.load("robot.png")
+        self.robot = pygame.image.load("helmet_sprite_small.png")
         self.coin = pygame.image.load("coin.png")
         self.door = pygame.image.load("door.png")
         self.monster = pygame.image.load("monster.png")
