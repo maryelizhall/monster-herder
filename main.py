@@ -1,11 +1,11 @@
 # Welcome to Monster Herder!  Here are some directions:
-# Your goal is to move the dog to herd the monsters through the door in the bottom left corner.
+# Your goal is to move the dog to herd the sheep through the door in the bottom left corner.
 # Collect coins along the way for extra points!
-# Each monster that goes through the gate is worth 3 points.
+# Each sheep that goes through the gate is worth 3 points.
 # Each coin collected is worth 1 point.
-# Each monster that escapes through the right or left side of the window is a 1 point deduction.
-# The monsters will scatter if you don't try to herd them.
-# They'll move closer together and away from the robot when the robot is in motion.
+# Each sheep that escapes through the right or left side of the window is a 1 point deduction.
+# The sheep will scatter if you don't try to herd them.
+# They'll move closer together and away from the dog when the dog is in motion.
 # Have fun!
 
 import pygame
@@ -21,7 +21,6 @@ class MonsterHerder:
         self.n_monsters = 3
         self.monster_speed = 0.5
         self.robot_speed = 2
-        self.gate_width = 4
         self.com_dist_thresh = 50
         self.coins_caught = 0
         self.monsters_caught = 0
@@ -47,8 +46,8 @@ class MonsterHerder:
     def load_images(self):
         self.robot = pygame.image.load("helmet_sprite_small.png")
         self.coin = pygame.image.load("coin.png")
-        self.door = pygame.image.load("door.png")
-        self.monster = pygame.image.load("monster.png")
+        self.door = pygame.image.load("fence.png")
+        self.monster = pygame.image.load("sheep_sprite_small.png")
 
     def new_game(self):
         self.monster_x = []
@@ -180,7 +179,7 @@ class MonsterHerder:
 
         # check to see if monsters have gone through gate
         for ii in range(len(self.monster_x)):
-            if self.monster_x[ii] > self.door_loc[0] and self.monster_x[ii] < self.door_loc[0] + (self.door.get_width()-16)*self.gate_width - self.monster.get_width():
+            if self.monster_x[ii] > self.door_loc[0] and self.monster_x[ii] < self.door_loc[0] + self.door.get_width() - self.monster.get_width():
                 if self.monster_y[ii] > self.door_loc[1]:
                     exited_monsters.append(ii)
                     self.monsters_caught += 1
@@ -210,8 +209,7 @@ class MonsterHerder:
     def draw_window(self):
         self.window.fill((128, 128, 128))
 
-        for ii in range(self.gate_width):
-            self.window.blit(self.door, (self.door_loc[0]+ (self.door.get_width()-16)*ii,self.door_loc[1]))
+        self.window.blit(self.door, (self.door_loc[0],self.door_loc[1]))
 
         for ii in range(len(self.monster_x)):
             self.window.blit(self.monster, (self.monster_x[ii],self.monster_y[ii]))
@@ -219,7 +217,7 @@ class MonsterHerder:
         for ii in range(len(self.coin_x)):
             self.window.blit(self.coin, (self.coin_x[ii],self.coin_y[ii]))
 
-        text = self.game_font.render(f"Coins: {self.coins_caught}   Monsters Lost: {self.monsters_lost}   Monsters Caught: {self.monsters_caught}", True, (0, 0, 0))
+        text = self.game_font.render(f"Coins: {self.coins_caught}   Sheep Lost: {self.monsters_lost}   Sheep Caught: {self.monsters_caught}", True, (0, 0, 0))
         self.window.blit(text, (200, 15))
 
         if len(self.monster_x) == 0:
