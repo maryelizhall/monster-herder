@@ -7,6 +7,6 @@ Welcome to Monster Herder!  Here are some directions:
 - Each coin collected is worth 1 point.
 - Each sheep that escapes through the right or left side of the window is a 1 point deduction.
 - The sheep will scatter if you don't try to herd them.
-- They'll move closer together and away from them when the dog is in motion.
+- They'll move closer together and away from the dog when the dog is in motion.
 
 Have fun!
